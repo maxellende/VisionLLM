@@ -19,7 +19,7 @@ mim install mmengine
 # cd ..
 
 # install packages
-pip3 install -r requirements.txt
+pip3 install -r requirements_new.txt
 
 # install detectron2
 python -m pip install 'git+https://github.com/facebookresearch/detectron2.git' --user
