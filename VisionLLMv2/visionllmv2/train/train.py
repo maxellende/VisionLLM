@@ -177,6 +177,7 @@ class TrainingArguments(transformers.TrainingArguments):
     group_by_data_source: bool = field(default=False)      # multi-dataset loader
     group_by_task_data_source: bool = field(default=False) # multi-dataset loader, only using one tool in one iter
     eval_only: bool = field(default=False)                 # for eval
+    result_dir: str = field(default='')                 # eval results dir
     # lr multiplier
     lr_llm_multiplier: Optional[float] = field(default=1.0)
     lr_multiplier: Optional[float] = field(default=0.1)
@@ -595,7 +596,7 @@ def train(eval_only=False):
                 if task == 'det':
                     if dataset_name == 'coco':
                         num_classes, topk = 80, 100
-                        eval_det(model, eval_dataloader, num_classes=num_classes, topk=topk, with_mask=eval_dataset.with_mask)
+                        eval_det(model, eval_dataloader, num_classes=num_classes, topk=topk, with_mask=eval_dataset.with_mask, jsonfile_prefix=os.path.join(training_args.result_dir,'coco_results') if len(training_args.result_dir)>1 else None)
                     elif dataset_name == 'crowdhuman':
                         num_classes, topk = 1, 500
                         eval_det(model, eval_dataloader, num_classes=num_classes, topk=topk, with_mask=eval_dataset.with_mask, jsonfile_prefix='crowdhuman')

@@ -1,11 +1,14 @@
 #!/bin/bash
 
 OUTPUT_DIR=$1
+RESULT_DIR=$SCRATCH/FIG/VisionLLMv2/data/coco
 CONFIG=$2
 GPUS=${GPUS:-8}
 NNODES=${NNODES:-1}
 NODE_RANK=${NODE_RANK:-0}
 PORT=${PORT:-29500}
+
+# mkdir -p ${OUTPUT_DIR}
 
 PYTHONPATH="$(dirname $0)/../../..":$PYTHONPATH \
 torchrun --nnodes=${NNODES} --nproc_per_node=${GPUS} --master_port=${PORT} \
@@ -30,6 +33,7 @@ torchrun --nnodes=${NNODES} --nproc_per_node=${GPUS} --master_port=${PORT} \
     --image_aspect_ratio anyres \
     --bf16 True \
     --output_dir ${OUTPUT_DIR} \
+    --result_dir ${RESULT_DIR} \
     --num_train_epochs 12 \
     --per_device_train_batch_size 2 \
     --per_device_eval_batch_size 1 \
